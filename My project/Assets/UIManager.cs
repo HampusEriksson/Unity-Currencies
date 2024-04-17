@@ -9,36 +9,32 @@ using System.Threading.Tasks;
 
 public class UIManager : MonoBehaviour
 {
+    private PriceManager priceManager;
     public TextMeshProUGUI bitcoinPriceText;
     // Start is called before the first frame update
     void Start()
     {
-        Prices.UpdatePrices();
-        Prices.SetupPrices();
-        StartCoroutine(UpdatePrices());
+        priceManager = GameObject.Find("PriceManager").GetComponent<PriceManager>();
+               
         
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        bitcoinPriceText.text = Prices.bitcoinPrices["USD"].ToString() + " $"
-            + "\n" + Prices.bitcoinPrices["GBP"].ToString() + " £"
-            + "\n" + Prices.bitcoinPrices["EUR"].ToString() + " €";
-        
-        
-    }
-
-    public IEnumerator UpdatePrices()
-    {
-        while (true)
+        // For every currency in the dictionary, display the price
+        Dictionary<string, float> bitcoinPrices = priceManager.GetBitcoinPrices();
+        string text = "";
+        foreach (KeyValuePair<string, float> entry in bitcoinPrices)
         {
-            Debug.Log("Updating Prices");
-            yield return new WaitForSeconds(30);
-            Prices.UpdatePrices();
+           text += entry.Key + ": " + entry.Value + "\n";
         }
+        bitcoinPriceText.text = text;
+
+        
+        
     }
+
 
     
 }
