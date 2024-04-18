@@ -29,11 +29,11 @@ public class PriceManager : MonoBehaviour
     public void UpdatePrices()
     {
         StartCoroutine(UpdateBitcoinPrice());
+        StartCoroutine(UpdateEthereumPrice());
     }
 
     IEnumerator UpdateBitcoinPrice()
     {
-        Debug.Log("Test");
         using (UnityWebRequest request = UnityWebRequest.Get("https://api.coindesk.com/v1/bpi/currentprice.json"))
         {
             yield return request.SendWebRequest();
@@ -54,6 +54,11 @@ public class PriceManager : MonoBehaviour
         }
     }
 
+    IEnumerator UpdateEthereumPrice()
+    {
+        // Not implemneted yet
+        yield return null;
+    }
     public Dictionary<string, float> GetBitcoinPrices()
     {
         return bitcoinPrices;
